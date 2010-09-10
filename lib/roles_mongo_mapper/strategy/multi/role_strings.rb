@@ -19,7 +19,7 @@ module RoleStrategy::MongoMapper
 
       def in_roles(*role_names)
         begin
-          where(:roles => roles.select_labels)
+          where(role_attribute.in => role_names.to_strings)
         rescue
           return []
         end
@@ -27,10 +27,6 @@ module RoleStrategy::MongoMapper
     end
     
     module Implementation 
-      def role_attribute
-        strategy_class.roles_attribute_name
-      end 
-
       # assign roles
       def roles=(*new_roles)
         new_roles = new_roles.flatten.map{|r| r.to_s if valid_role?(r)}.compact

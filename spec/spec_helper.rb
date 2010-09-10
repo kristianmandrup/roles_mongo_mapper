@@ -1,9 +1,8 @@
 require 'rspec'
 require 'rspec/autorun'
-require 'mongo_mapper'
-require 'roles_for_mm'
+require 'roles_mongo_mapper'
                  
-MongoMapper.database = 'roles_for_mm'
+MongoMapper.database = 'roles_mongo_mapper'
 
 module Database
   def self.teardown
@@ -16,6 +15,14 @@ end
 
 RSpec.configure do |config|
   config.mock_with :mocha
+  config.before do
+    Database.teardown
+  end
+  
+  config.after do
+    Database.teardown
+  end
+  
 end
 
 

@@ -8,20 +8,15 @@ class User
   strategy :many_roles, :default
   role_class :role
 
-  valid_roles_are :admin, :guest   
-
   key :name, String 
 end
 
-describe "Roles for MongoMapper" do  
-  
-  after :each do
-    Database.teardown
-  end
-
+describe "Roles for MongoMapper" do    
   context "default setup" do
 
     before do              
+      User.valid_roles_are :admin, :guest   
+      
       @user = User.create(:name => 'Kristian')
       @user.add_roles :guest      
       @user.save     
@@ -32,7 +27,7 @@ describe "Roles for MongoMapper" do
     end
     
     describe '#in_role' do
-      it "should return first user matching role" do        
+      it "should return first user matching role" do 
         User.in_role(:guest).first.name.should == 'Kristian'      
         User.in_role(:admin).first.name.should == 'Admin user'
       end
@@ -42,7 +37,7 @@ describe "Roles for MongoMapper" do
       it "should have admin user role to :admin" do      
         @admin_user.roles_list.first.should == :admin      
         @admin_user.admin?.should be_true
-
+    
         @admin_user.has_role?(:guest).should be_false
         
         @admin_user.has_role?(:admin).should be_true
@@ -50,7 +45,7 @@ describe "Roles for MongoMapper" do
         @admin_user.has_roles?(:admin).should be_true
         @admin_user.has?(:admin).should be_true      
       end
-
+    
       it "should have user role to :guest" do
         @user.roles_list.first.should == :guest
         @user.admin?.should be_false

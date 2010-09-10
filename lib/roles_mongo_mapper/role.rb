@@ -3,7 +3,7 @@ module Roles::Base
     strategy_class.valid_roles = role_list.to_symbols
     if role_class_name
       role_list.each do |name|
-        role_class_name.create(:name => name.to_s)
+        role_class_name.create(:name => name.to_s).save
       end
     end
   end
@@ -13,15 +13,19 @@ class Role
   include MongoMapper::Document
   key :name, String
 
+  scope :by_name,  lambda { |name| where(:name => name.to_s) }
+  scope :by_names,  lambda { |*names| where(:name => names.to_strings) }
+
+
   class << self
     def find_roles(*role_names)
-      where(:name.in => role_names.flatten).to_a
+      # return all(:name => role_names.to_strings)
+      by_names(*role_names).all
     end
 
     def find_role role_name
       raise ArgumentError, "#find_role takes a single role name as argument, not: #{role_name.inspect}" if !role_name.kind_of_label?
-      res = find_roles(role_name)
-      res ? res.first : res
+      by_name(role_name).first
     end
   end
 end  

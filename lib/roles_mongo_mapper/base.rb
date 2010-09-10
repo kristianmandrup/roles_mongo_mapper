@@ -8,7 +8,7 @@ module Roles::MongoMapper
   def self.included(base) 
     base.extend Roles::Base
     base.extend ClassMethods
-    orm_name :mongo_mapper  
+    base.orm_name = :mongo_mapper
   end
 
   module ClassMethods
@@ -23,10 +23,11 @@ module Roles::MongoMapper
       :roles_string => "key :roles_string,  String"
     }
     
-    def strategy name, options=nil
+    def strategy name, options = nil
       if options == :default && MAP[name]
         instance_eval MAP[name] 
       end
+
       role_strategy name, options
     end    
   end

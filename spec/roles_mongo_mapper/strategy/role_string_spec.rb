@@ -13,11 +13,6 @@ class User
 end
 
 describe "Roles for MongoMapper" do  
-  
-  after :each do
-    Database.teardown
-  end
-
   context "default setup" do
 
     before do              

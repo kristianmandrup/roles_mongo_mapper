@@ -13,10 +13,6 @@ class User
 end
 
 describe "Roles for MongoMapper" do  
-  
-  after :each do
-    Database.teardown
-  end
 
   context "default setup" do
 
@@ -31,7 +27,7 @@ describe "Roles for MongoMapper" do
     end
     
     describe '#in_role' do
-      it "should return first user matching role" do        
+      it "should return first user matching role" do
         User.in_role(:guest).first.name.should == 'Kristian'      
         User.in_role(:admin).first.name.should == 'Admin user'
       end

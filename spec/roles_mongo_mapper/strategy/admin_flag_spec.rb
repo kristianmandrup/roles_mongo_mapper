@@ -30,6 +30,8 @@ describe "Roles for MongoMapper" do
 
     describe '#in_role' do
       it "should return first user maching role" do
+        puts "Guest: #{User.where(:name => "Kristian").first}"
+        
         User.in_role(:guest).first.name.should == 'Kristian'
         User.in_role(:admin).first.name.should == 'Admin user'
       end
