@@ -20,13 +20,31 @@ It also implements the following Role strategies:
 
 ## Rails generator
 
-_Note_: Needs some work!
 
-The library comes with a Rails 3 generator that lets you populate a user model with a given role strategy 
+The library comes with a Rails 3 generator that lets you populate a user model with a role strategy of your choice. 
 
-Example:
+The following role strategies are included by default. Add your own by adding extra files inside the strategy folder, one file for each role strategy is recommended.
 
-<code>$ rails g mongo_mapper:roles user admin_flag</code>
+* admin_flag
+* many_roles
+* one_role
+* roles_mask
+* role_string
+* role_strings
+
+*Roles generator*
+
+Apply :admin_flag Role strategy to User model using default roles :admin and :guest (default)
+
+<code>$ rails g mongo_mapper:roles User --strategy admin_flag</code>
+
+Apply :admin_flag Role strategy to User model using default roles and extra role :author
+
+<code>$ rails g mongo_mapper:roles_migration User --strategy admin_flag --roles author</code>
+
+Apply :one_role Role strategy to User model without default roles, only with roles :user, :special and :editor
+
+<code>$ rails g mongo_mapper:roles_migration User --strategy one_role --roles user special editor --no-default-roles</code>
 
 
 ## Note on Patches/Pull Requests

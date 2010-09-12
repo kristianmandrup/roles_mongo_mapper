@@ -27,7 +27,7 @@ describe 'role strategy generator: admin_flag' do
         arguments = "User --strategy admin_flag --roles admin user"
         puts "arguments: #{arguments}"
         g.run_generator arguments.args
-        root_dir.should have_model :user do |clazz|
+        g.should generate_model :user do |clazz|
           clazz.should include_module 'MongoMapper::Document'
           clazz.should include_module 'Roles::MongoMapper'
           puts "clazz: #{clazz}"        
@@ -45,7 +45,7 @@ describe 'role strategy generator: admin_flag' do
         arguments = "User --strategy one_role --roles admin user"
         puts "arguments: #{arguments}"
         g.run_generator arguments.args
-        root_dir.should have_model :user do |clazz|
+        g.should generate_model :user do |clazz|
           clazz.should include_module 'MongoMapper::Document'
           clazz.should include_module 'Roles::MongoMapper'
           puts "clazz: #{clazz}"        
