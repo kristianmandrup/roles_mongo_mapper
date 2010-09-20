@@ -1,5 +1,4 @@
-require 'rspec'
-require 'rspec/autorun'
+require 'rspec/core'
 require 'roles_mongo_mapper'
                  
 MongoMapper.database = 'roles_mongo_mapper'

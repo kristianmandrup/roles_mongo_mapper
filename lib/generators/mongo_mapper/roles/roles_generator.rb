@@ -24,7 +24,8 @@ module MongoMapper
 
       extend Rails3::Assist::UseMacro
       use_orm :mongo_mapper
-      include Rails::Assist::BasicLogging
+
+      include Rails3::Assist::BasicLogging
 
       def orm
         :mongo_mapper
