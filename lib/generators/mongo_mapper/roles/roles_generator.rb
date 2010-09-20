@@ -13,8 +13,8 @@ module MongoMapper
       class_option :roles, :type => :array, :aliases => "-r", :default => [], :desc => "Valid roles"
 
       def apply_role_strategy
-        log.add_logfile
-        log.debug "apply_role_strategy for : #{strategy} in model #{name}"
+        logger.add_logfile
+        logger.debug "apply_role_strategy for : #{strategy} in model #{name}"
         insert_into_model name do
           insertion_text
         end
@@ -25,7 +25,7 @@ module MongoMapper
       extend Rails3::Assist::UseMacro
       use_orm :mongo_mapper
 
-      include Rails3::Assist::BasicLogging
+      include Rails3::Assist::BasicLogger
 
       def orm
         :mongo_mapper
