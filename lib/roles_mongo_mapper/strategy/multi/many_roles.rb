@@ -39,7 +39,9 @@ module RoleStrategy::MongoMapper
       
       # assign roles
       def roles=(*role_names)  
-        raise "Role class #{role_class} does not have a #find_role(role) method" if !role_class.respond_to? :find_role
+        _roles = get_roles(_roles)
+        return nil if !_roles || _roles.empty?        
+
         role_relations = role_class.find_roles(*role_names) 
         self.send("#{role_attribute}=", role_relations)
         save
