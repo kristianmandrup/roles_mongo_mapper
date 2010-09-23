@@ -46,9 +46,9 @@ module RoleStrategy::MongoMapper
       end       
             
       # assign roles
-      def roles=(*roles)      
+      def roles=(*_roles)      
         _roles = get_roles(_roles)
-        return nil if !_roles || _roles.empty?        
+        return nil if _roles.none?                
 
         role_relation = role_class.find_role(_roles.first)
         if role_relation

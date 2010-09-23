@@ -38,11 +38,11 @@ module RoleStrategy::MongoMapper
       end
       
       # assign roles
-      def roles=(*role_names)  
+      def roles=(*_roles)  
         _roles = get_roles(_roles)
-        return nil if !_roles || _roles.empty?        
+        return nil if _roles.none?                
 
-        role_relations = role_class.find_roles(*role_names) 
+        role_relations = role_class.find_roles(_roles) 
         self.send("#{role_attribute}=", role_relations)
         save
       end
