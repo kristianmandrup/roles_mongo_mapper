@@ -16,7 +16,7 @@ describe 'role strategy generator: admin_flag' do
     end
 
     after :each do
-      # remove_model :user
+      remove_model :user
     end
         
     it "should configure 'admin_flag' strategy" do            
@@ -33,6 +33,24 @@ describe 'role strategy generator: admin_flag' do
           puts "clazz: #{clazz}"        
           clazz.should have_call :valid_roles_are, :args => ':admin, :guest, :user'
           clazz.should have_call :strategy, :args => ":admin_flag"        
+        end
+      end
+    end
+
+    it "should configure 'admin_flag' strategy using -s shortcut and defaut roles :admin and :guest" do            
+      create_model :user do
+        '# content'
+      end
+      with_generator do |g|   
+        arguments = "User --strategy admin_flag"
+        puts "arguments: #{arguments}"
+        g.run_generator arguments.args
+        g.should generate_model :user do |clazz|
+          clazz.should include_module 'MongoMapper::Document'
+          clazz.should include_module 'Roles::MongoMapper'
+          puts "clazz: #{clazz}"        
+          clazz.should have_call :valid_roles_are, :args => ':admin, :guest'
+          clazz.should have_call :strategy, :args => ":admin_flag"
         end
       end
     end

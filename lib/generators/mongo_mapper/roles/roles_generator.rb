@@ -6,15 +6,13 @@ module MongoMapper
     class RolesGenerator < Rails::Generators::NamedBase      
       desc "Add role strategy to a model" 
       
-      class_option :strategy, :type => :string, :aliases => "-s", :default => 'role_string', 
+      class_option :strategy, :type => :string, :default => 'role_string', 
                    :desc => "Role strategy to use (admin_flag, role_string, roles_string, role_strings, one_role, many_roles, roles_mask)"
 
 
-      class_option :roles, :type => :array, :aliases => "-r", :default => [], :desc => "Valid roles"
+      class_option :roles, :type => :array, :default => [], :desc => "Valid roles"
 
       def apply_role_strategy
-        logger.add_logfile
-        logger.debug "apply_role_strategy for : #{strategy} in model #{name}"
         insert_into_model name do
           insertion_text
         end
