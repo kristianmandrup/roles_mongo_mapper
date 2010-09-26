@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
-  s.date = %q{2010-09-23}
+  s.date = %q{2010-09-26}
   s.description = %q{Makes it easy to set a role strategy on your User model in MongoMapper}
   s.email = %q{kmandrup@gmail.com}
   s.extra_rdoc_files = [
@@ -36,7 +36,6 @@ Gem::Specification.new do |s|
      "lib/roles_mongo_mapper/strategy/single/admin_flag.rb",
      "lib/roles_mongo_mapper/strategy/single/one_role.rb",
      "lib/roles_mongo_mapper/strategy/single/role_string.rb",
-     "logging.log",
      "roles_mongo_mapper.gemspec",
      "sandbox/test.rb",
      "spec/generator_spec_helper.rb",
