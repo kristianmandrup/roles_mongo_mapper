@@ -16,7 +16,8 @@ begin
     gem.add_dependency "require_all",       '~> 1.2.0'
     gem.add_dependency "sugar-high",        '~> 0.2.11'
     gem.add_dependency "roles_generic",     '~> 0.2.7'
-    gem.add_dependency 'logging_assist',    '~> 0.1.3'
+    gem.add_dependency 'rails3_artifactor', '>= 0.2.6'
+    gem.add_dependency 'logging_assist',    '>= 0.1.5'
 
   end
   Jeweler::GemcutterTasks.new
