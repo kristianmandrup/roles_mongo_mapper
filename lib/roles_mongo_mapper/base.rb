@@ -28,7 +28,7 @@ module Roles::MongoMapper
         instance_eval MAP[name] 
       end
 
-      role_strategy name, options
+      set_role_strategy name, options
     end    
   end
 end
