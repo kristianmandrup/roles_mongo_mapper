@@ -6,12 +6,13 @@ class User
   include Roles::MongoMapper 
   
   strategy :roles_mask, :default
-  valid_roles_are :admin, :guest
+  valid_roles_are :admin, :guest, :user  
 
-  key :name, String
+  key :name, :type => String  
 end
 
-describe "Roles for Mongoid: :roles_mask strategy" do
-  require "roles_mongo_mapper/user_setup"
-  require "roles_generic/rspec/api"
+def api_name
+  :roles_mask
 end
+
+load 'roles_mongo_mapper/strategy/api_examples.rb'

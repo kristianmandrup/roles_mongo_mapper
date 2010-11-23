@@ -17,7 +17,7 @@ module Roles::MongoMapper
       :admin_flag   => "key :admin_flag, Boolean",
       # :many_roles   => "references_many :many_roles, :stored_as => :array, :class_name => 'Role', :default => []",
       # :one_role     => "references_one :one_role, :class_name => 'Role'",
-      :roles_mask   => "key :roles_mask,    Integer, :default => 1",
+      :roles_mask   => "key :roles_mask,    Integer, :default => 0",
       :role_string  => "key :role_string,   String",
       :role_strings => "key :role_strings,  Array",
       :roles_string => "key :roles_string,  String"
