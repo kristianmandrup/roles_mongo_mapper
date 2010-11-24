@@ -21,7 +21,7 @@ module Roles::MongoMapper
       end
 
       def select_valid_roles *roles
-        roles.flat_uniq.select{|role| valid_role? role }
+        roles = roles.flat_uniq.select{|role| valid_role? role }
         has_role_class? ? role_class.find_roles(roles).to_a.flat_uniq : roles.flat_uniq
       end           
     end

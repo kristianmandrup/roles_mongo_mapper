@@ -1,4 +1,4 @@
-require 'spec_helper' 
+require 'spec_helper'
 use_roles_strategy :many_roles
 
 class User 
@@ -6,12 +6,14 @@ class User
   include Roles::MongoMapper 
   
   strategy :many_roles, :default
-  role_class :role
+  role_class :role    
+  valid_roles_are :admin, :guest, :user  
 
-  key :name, String 
+  key :name, :type => String  
 end
 
-describe "Roles for Mongoid: :many_roles strategy" do
-  require "roles_mongo_mapper/user_setup"
-  require "roles_generic/rspec/api"
+def api_name
+  :many_roles
 end
+
+load 'roles_mongo_mapper/strategy/api_examples.rb'

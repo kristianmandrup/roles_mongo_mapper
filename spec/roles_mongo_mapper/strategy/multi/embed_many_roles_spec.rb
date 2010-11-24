@@ -1,20 +1,19 @@
 require 'spec_helper'
-use_roles_strategy :one_role
+use_roles_strategy :embed_many_roles
 
 class User 
   include MongoMapper::Document  
   include Roles::MongoMapper 
   
-  strategy :one_role, :default
+  strategy :embed_many_roles, :role_class => :role, :config => :default
   role_class :role  
-  valid_roles_are :admin, :guest  
+  valid_roles_are :admin, :guest, :user  
 
   key :name, :type => String  
 end
 
 def api_name
-  :one_role
+  :embed_many_roles
 end
 
 load 'roles_mongo_mapper/strategy/api_examples.rb'
-

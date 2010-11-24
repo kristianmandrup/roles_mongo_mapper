@@ -10,17 +10,19 @@ module Roles::Base
 end
 
 class Role
-  include MongoMapper::Document
+  include MongoMapper::EmbeddedDocument  
   key :name, String
 
-  scope :by_name,  lambda { |name| where(:name => name.to_s) }
-  scope :by_names,  lambda { |*names| where(:name => names.to_strings) }
+  key :user_id, ObjectId
+  belongs_to :user
+  
+  # scope :by_name,  lambda { |name| where(:name => name.to_s) }
+  # scope :by_names,  lambda { |*names| where(:name => names.to_strings) }
 
   class << self
     def find_roles(*role_names)  
       role_names.flatten!
       by_names(role_names).all
-      # where(:name => role_names.to_strings).all 
     end
 
     def find_role role_name
