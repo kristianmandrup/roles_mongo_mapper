@@ -15,7 +15,7 @@ begin
     gem.add_dependency "activesupport",     '~> 3.0'
     gem.add_dependency "require_all",       '~> 1.2.0'
     gem.add_dependency "sugar-high",        '~> 0.3.0'
-    gem.add_dependency "roles_generic",     '~> 0.2.7'
+    gem.add_dependency "roles_generic",     '~> 0.3.3'
     gem.add_dependency 'rails3_artifactor', '~> 0.3.0'
     gem.add_dependency 'logging_assist',    '>= 0.1.5'
 
