@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{roles_mongo_mapper}
-  s.version = "0.1.4"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
-  s.date = %q{2010-10-07}
+  s.date = %q{2010-11-24}
   s.description = %q{Makes it easy to set a role strategy on your User model in MongoMapper}
   s.email = %q{kmandrup@gmail.com}
   s.extra_rdoc_files = [
@@ -27,25 +27,36 @@ Gem::Specification.new do |s|
      "lib/generators/mongo_mapper/roles/roles_generator.rb",
      "lib/roles_mongo_mapper.rb",
      "lib/roles_mongo_mapper/base.rb",
+     "lib/roles_mongo_mapper/embedded_role.rb",
      "lib/roles_mongo_mapper/namespaces.rb",
      "lib/roles_mongo_mapper/role.rb",
      "lib/roles_mongo_mapper/strategy.rb",
+     "lib/roles_mongo_mapper/strategy/multi.rb",
+     "lib/roles_mongo_mapper/strategy/multi/embed_many_roles.rb",
      "lib/roles_mongo_mapper/strategy/multi/many_roles.rb",
      "lib/roles_mongo_mapper/strategy/multi/role_strings.rb",
      "lib/roles_mongo_mapper/strategy/multi/roles_mask.rb",
+     "lib/roles_mongo_mapper/strategy/shared.rb",
+     "lib/roles_mongo_mapper/strategy/single.rb",
      "lib/roles_mongo_mapper/strategy/single/admin_flag.rb",
+     "lib/roles_mongo_mapper/strategy/single/embed_one_role.rb",
      "lib/roles_mongo_mapper/strategy/single/one_role.rb",
      "lib/roles_mongo_mapper/strategy/single/role_string.rb",
      "roles_mongo_mapper.gemspec",
      "sandbox/test.rb",
      "spec/generator_spec_helper.rb",
      "spec/roles_mongo_mapper/generators/roles_generator_spec.rb",
-     "spec/roles_mongo_mapper/strategy/admin_flag_spec.rb",
-     "spec/roles_mongo_mapper/strategy/many_roles_spec.rb",
-     "spec/roles_mongo_mapper/strategy/one_role_spec.rb",
-     "spec/roles_mongo_mapper/strategy/role_string_spec.rb",
-     "spec/roles_mongo_mapper/strategy/role_strings_spec.rb",
-     "spec/roles_mongo_mapper/strategy/roles_mask_spec.rb",
+     "spec/roles_mongo_mapper/strategy/api_examples.rb",
+     "spec/roles_mongo_mapper/strategy/hooks.rb",
+     "spec/roles_mongo_mapper/strategy/multi/embed_many_roles_spec.rb",
+     "spec/roles_mongo_mapper/strategy/multi/many_roles_spec.rb",
+     "spec/roles_mongo_mapper/strategy/multi/role_strings_spec.rb",
+     "spec/roles_mongo_mapper/strategy/multi/roles_mask_spec.rb",
+     "spec/roles_mongo_mapper/strategy/single/admin_flag_spec.rb",
+     "spec/roles_mongo_mapper/strategy/single/embed_one_role_spec.rb",
+     "spec/roles_mongo_mapper/strategy/single/one_role_spec.rb",
+     "spec/roles_mongo_mapper/strategy/single/role_string_spec.rb",
+     "spec/roles_mongo_mapper/strategy/user_setup.rb",
      "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/kristianmandrup/roles_mongo_mapper}
@@ -56,12 +67,17 @@ Gem::Specification.new do |s|
   s.test_files = [
     "spec/generator_spec_helper.rb",
      "spec/roles_mongo_mapper/generators/roles_generator_spec.rb",
-     "spec/roles_mongo_mapper/strategy/admin_flag_spec.rb",
-     "spec/roles_mongo_mapper/strategy/many_roles_spec.rb",
-     "spec/roles_mongo_mapper/strategy/one_role_spec.rb",
-     "spec/roles_mongo_mapper/strategy/role_string_spec.rb",
-     "spec/roles_mongo_mapper/strategy/role_strings_spec.rb",
-     "spec/roles_mongo_mapper/strategy/roles_mask_spec.rb",
+     "spec/roles_mongo_mapper/strategy/api_examples.rb",
+     "spec/roles_mongo_mapper/strategy/hooks.rb",
+     "spec/roles_mongo_mapper/strategy/multi/embed_many_roles_spec.rb",
+     "spec/roles_mongo_mapper/strategy/multi/many_roles_spec.rb",
+     "spec/roles_mongo_mapper/strategy/multi/role_strings_spec.rb",
+     "spec/roles_mongo_mapper/strategy/multi/roles_mask_spec.rb",
+     "spec/roles_mongo_mapper/strategy/single/admin_flag_spec.rb",
+     "spec/roles_mongo_mapper/strategy/single/embed_one_role_spec.rb",
+     "spec/roles_mongo_mapper/strategy/single/one_role_spec.rb",
+     "spec/roles_mongo_mapper/strategy/single/role_string_spec.rb",
+     "spec/roles_mongo_mapper/strategy/user_setup.rb",
      "spec/spec_helper.rb"
   ]
 
@@ -70,33 +86,36 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<rspec>, [">= 2.0.0.rc"])
+      s.add_development_dependency(%q<rspec>, [">= 2.1"])
       s.add_development_dependency(%q<generator-spec>, ["~> 0.6.5"])
-      s.add_runtime_dependency(%q<mongo_mapper>, ["~> 0.8.4"])
-      s.add_runtime_dependency(%q<activesupport>, ["~> 3.0.0"])
+      s.add_runtime_dependency(%q<mongo_mapper>, [">= 0.8.4"])
+      s.add_runtime_dependency(%q<activesupport>, ["~> 3.0"])
       s.add_runtime_dependency(%q<require_all>, ["~> 1.2.0"])
-      s.add_runtime_dependency(%q<sugar-high>, ["~> 0.2.11"])
-      s.add_runtime_dependency(%q<roles_generic>, ["~> 0.2.7"])
-      s.add_runtime_dependency(%q<logging_assist>, ["~> 0.1.3"])
+      s.add_runtime_dependency(%q<sugar-high>, ["~> 0.3.0"])
+      s.add_runtime_dependency(%q<roles_generic>, ["~> 0.3.3"])
+      s.add_runtime_dependency(%q<rails3_artifactor>, ["~> 0.3.0"])
+      s.add_runtime_dependency(%q<logging_assist>, [">= 0.1.5"])
     else
-      s.add_dependency(%q<rspec>, [">= 2.0.0.rc"])
+      s.add_dependency(%q<rspec>, [">= 2.1"])
       s.add_dependency(%q<generator-spec>, ["~> 0.6.5"])
-      s.add_dependency(%q<mongo_mapper>, ["~> 0.8.4"])
-      s.add_dependency(%q<activesupport>, ["~> 3.0.0"])
+      s.add_dependency(%q<mongo_mapper>, [">= 0.8.4"])
+      s.add_dependency(%q<activesupport>, ["~> 3.0"])
       s.add_dependency(%q<require_all>, ["~> 1.2.0"])
-      s.add_dependency(%q<sugar-high>, ["~> 0.2.11"])
-      s.add_dependency(%q<roles_generic>, ["~> 0.2.7"])
-      s.add_dependency(%q<logging_assist>, ["~> 0.1.3"])
+      s.add_dependency(%q<sugar-high>, ["~> 0.3.0"])
+      s.add_dependency(%q<roles_generic>, ["~> 0.3.3"])
+      s.add_dependency(%q<rails3_artifactor>, ["~> 0.3.0"])
+      s.add_dependency(%q<logging_assist>, [">= 0.1.5"])
     end
   else
-    s.add_dependency(%q<rspec>, [">= 2.0.0.rc"])
+    s.add_dependency(%q<rspec>, [">= 2.1"])
     s.add_dependency(%q<generator-spec>, ["~> 0.6.5"])
-    s.add_dependency(%q<mongo_mapper>, ["~> 0.8.4"])
-    s.add_dependency(%q<activesupport>, ["~> 3.0.0"])
+    s.add_dependency(%q<mongo_mapper>, [">= 0.8.4"])
+    s.add_dependency(%q<activesupport>, ["~> 3.0"])
     s.add_dependency(%q<require_all>, ["~> 1.2.0"])
-    s.add_dependency(%q<sugar-high>, ["~> 0.2.11"])
-    s.add_dependency(%q<roles_generic>, ["~> 0.2.7"])
-    s.add_dependency(%q<logging_assist>, ["~> 0.1.3"])
+    s.add_dependency(%q<sugar-high>, ["~> 0.3.0"])
+    s.add_dependency(%q<roles_generic>, ["~> 0.3.3"])
+    s.add_dependency(%q<rails3_artifactor>, ["~> 0.3.0"])
+    s.add_dependency(%q<logging_assist>, [">= 0.1.5"])
   end
 end
 
