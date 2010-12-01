@@ -9,12 +9,28 @@ module MongoMapper
       class_option :strategy, :type => :string, :default => 'role_string', 
                    :desc => "Role strategy to use (admin_flag, role_string, roles_string, role_strings, one_role, many_roles, roles_mask)"
 
-
+      class_option :logfile, :type => :string,   :default => nil,   :desc => "Logfile location"
       class_option :roles, :type => :array, :default => [], :desc => "Valid roles"
 
       def apply_role_strategy
-        insert_into_model name do
-          insertion_text
+        logger.add_logfile :logfile => logfile if logfile
+        logger.debug "apply_role_strategy for : #{strategy} in model #{name}"
+
+        if !has_model_file?(user_model_name)
+          say "User model #{user_model_name} not found", :red
+          return 
+        end
+
+        begin 
+          insert_into_model user_model_name, :after => /include MongoMapper::\w+/ do
+            insertion_text
+          end     
+
+          unless read_model(:user) =~ /use_roles_strategy/
+            inject_into_file model_file(:user), "use_roles_strategy :#{strategy}\n\n", :before => "class"
+          end        
+        rescue Exception => e
+          logger.debug"Error: #{e.message}"
         end
       end 
       
@@ -24,6 +40,14 @@ module MongoMapper
       use_orm :mongo_mapper
 
       include Rails3::Assist::BasicLogger
+
+      def logfile
+        options[:logfile]
+      end
+
+      def user_model_name
+        name || 'User'
+      end
 
       def orm
         :mongo_mapper
@@ -50,7 +74,12 @@ module MongoMapper
       end
 
       def roles_statement
+        return '' if has_valid_roles_statement?
         roles ? "valid_roles_are #{roles.join(', ')}" : ''
+      end
+
+      def has_valid_roles_statement? 
+        !(read_model(user_model_name) =~ /valid_roles_are/).nil?
       end
 
       def insertion_text

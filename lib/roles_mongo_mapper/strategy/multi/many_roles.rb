@@ -78,36 +78,7 @@ module RoleStrategy::MongoMapper
 
       def set_empty_roles
         self.send("#{role_attribute}=", [])
-      end      
-      # def role_id_attribute
-      #   "#{role_attribute}_ids".to_sym
-      # end
-      # 
-      # # assign roles
-      # def roles=(*_roles)  
-      #   _roles = get_roles(_roles)
-      #   return nil if _roles.none?                
-      # 
-      #   role_relations = role_class.find_roles(_roles) 
-      #   self.send("#{role_attribute}=", role_relations)
-      #   save
-      # end
-      # 
-      # def add_roles(*role_names)  
-      #   raise "Role class #{role_class} does not have a #find_role(role) method" if !role_class.respond_to? :find_role
-      #   role_relations = role_class.find_roles(*role_names)
-      #   self.send(role_attribute) << role_relations
-      #   save
-      # end
-      # 
-      # # query assigned roles
-      # def roles
-      #   self.send(role_attribute)
-      # end
-      # 
-      # def roles_list     
-      #   [roles].flatten.map{|r| r.name }.compact.to_symbols
-      # end 
+      end
     end 
     
     extend Roles::Generic::User::Configuration
