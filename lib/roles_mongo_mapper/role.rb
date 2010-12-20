@@ -3,7 +3,10 @@ module Roles::Base
     strategy_class.valid_roles = role_list.to_symbols
     if role_class_name
       role_list.each do |name|
-        role_class_name.create(:name => name.to_s)
+        begin
+          role_class_name.create(:name => name.to_s)
+        rescue
+        end
       end
     end
   end
@@ -12,6 +15,8 @@ end
 class Role
   include MongoMapper::Document
   key :name, String
+
+  validates_uniqueness_of :name
 
   scope :by_name,  lambda { |name| where(:name => name.to_s) }
   scope :by_names,  lambda { |*names| where(:name => names.to_strings) }

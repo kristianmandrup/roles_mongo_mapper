@@ -37,9 +37,9 @@ module MongoMapper
       protected                  
 
       extend Rails3::Assist::UseMacro
-      use_orm :mongo_mapper
-
       include Rails3::Assist::BasicLogger
+
+      use_orm :mongo_mapper
 
       def logfile
         options[:logfile]
