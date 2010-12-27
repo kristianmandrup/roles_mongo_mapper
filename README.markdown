@@ -7,26 +7,27 @@ See the Roles [wiki](http://github.com/kristianmandrup/roles_generic/wiki) for a
 
 Role strategies implemented:
 
-Inline attribute on User
+Inline attribute on User:
 
 * admin_flag
 * roles_mask
 * role_string
 * role_strings
 
-Reference to Role
+Reference to Role:
 
 * many_roles
 * one_role
 
 *Update Dec 24, 2010*
 
-Please join in the effort to implement and add these strategies to the mix. So far they have been implemented successfully for Mongoid.
-
-Embedded role
+Embedded role:
 
 * embed_one_role
 * embed_many_roles
+
+Please join in the effort to implement and add these embedded strategies to the mix. 
+They have so far been implemented successfully for Mongoid.
 
 ## Install as system gem
 
@@ -41,6 +42,30 @@ Insert in Gemfile:
 Run <code>$ bundle install</code> from terminal
 
 Alternatively install using [Cream](http://github.com/kristianmandrup/cream)
+
+## Strategy and roles configuration
+
+Example: _role_string_ strategy
+
+<pre>class User
+  include MongoMapper::Document  
+  include Roles::MongoMapper 
+
+  strategy :one_role
+  valid_roles_are :admin, :guest, :user
+end  
+</pre>
+
+Example: _one_role_ strategy
+
+<pre>class User
+  include MongoMapper::Document  
+  include Roles::MongoMapper 
+
+  strategy :one_role
+  valid_roles_are :admin, :guest, :user
+end  
+</pre>
 
 ## Rails generator
 
