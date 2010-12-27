@@ -1,12 +1,10 @@
 require 'spec_helper'
-use_roles_strategy :many_roles
 
 class User 
   include MongoMapper::Document  
   include Roles::MongoMapper 
   
-  strategy :many_roles, :default
-  role_class :role    
+  strategy :many_roles
   valid_roles_are :admin, :guest, :user  
 
   key :name, :type => String  

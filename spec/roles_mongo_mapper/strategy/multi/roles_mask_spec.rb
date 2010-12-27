@@ -1,11 +1,9 @@
 require 'spec_helper'
-use_roles_strategy :roles_mask
-
 class User 
   include MongoMapper::Document  
   include Roles::MongoMapper 
   
-  strategy :roles_mask, :default
+  strategy :roles_mask
   valid_roles_are :admin, :guest, :user  
 
   key :name, :type => String  
