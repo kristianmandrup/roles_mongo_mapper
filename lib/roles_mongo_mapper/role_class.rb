@@ -6,6 +6,8 @@ class Role
 
   scope :by_name,  lambda { |name| where(:name => name.to_s) }
   scope :by_names,  lambda { |*names| where(:name => names.to_strings) }
+  
+  extend RoleClass::ClassMethods  
 end  
 
 

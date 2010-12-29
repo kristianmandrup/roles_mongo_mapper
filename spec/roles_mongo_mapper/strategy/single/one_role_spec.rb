@@ -1,4 +1,8 @@
 require 'spec_helper'
+
+class Role
+end
+
 class User 
   include MongoMapper::Document  
   include Roles::MongoMapper 

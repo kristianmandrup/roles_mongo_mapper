@@ -9,16 +9,20 @@ module Roles::Base
         end
       end
     end
-  end
-  
-  def find_roles(*role_names)  
-    role_names.flatten!
-    by_names(role_names).all
-    # where(:name => role_names.to_strings).all 
-  end
+  end  
+end
 
-  def find_role role_name
-    raise ArgumentError, "#find_role takes a single role name as argument, not: #{role_name.inspect}" if !role_name.kind_of_label?
-    by_name(role_name).first
+module RoleClass
+  module ClassMethods
+    def find_roles(*role_names)  
+      role_names.flatten!
+      by_names(role_names).all
+      # where(:name => role_names.to_strings).all 
+    end
+
+    def find_role role_name
+      raise ArgumentError, "#find_role takes a single role name as argument, not: #{role_name.inspect}" if !role_name.kind_of_label?
+      by_name(role_name).first
+    end
   end
 end
