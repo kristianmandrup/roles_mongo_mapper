@@ -9,8 +9,9 @@ module MongoMapper
       class_option :strategy, :type => :string, :default => 'role_string', 
                    :desc => "Role strategy to use (admin_flag, role_string, roles_string, role_strings, one_role, many_roles, roles_mask)"
 
-      class_option :logfile, :type => :string,   :default => nil,   :desc => "Logfile location"
-      class_option :roles, :type => :array, :default => [], :desc => "Valid roles"
+      class_option :logfile,      :type => :string,   :default => nil,   :desc => "Logfile location"
+      class_option :roles,        :type => :array,    :default => [], :desc => "Valid roles" 
+      class_option :role_class,   :type => :string,   :aliases => "-rc", :default => 'Role', :desc => "Role class"      
 
       def apply_role_strategy
         logger.add_logfile :logfile => logfile if logfile
@@ -31,7 +32,9 @@ module MongoMapper
           end        
         rescue Exception => e
           logger.debug"Error: #{e.message}"
-        end
+        end 
+        
+        copy_role_class if role_class_strategy?
       end 
       
       protected                  
@@ -40,6 +43,15 @@ module MongoMapper
       include Rails3::Assist::BasicLogger
 
       use_orm :mongo_mapper
+
+      def role_class_strategy?
+        [:one_role, :many_roles, :embed_one_role, :embed_many_roles].include? strategy.to_sym
+      end
+
+      def copy_role_class
+        logger.debug "copy_role_class: #{role_class.underscore}"
+        template 'role.rb', "app/models/#{role_class.underscore}.rb"
+      end
 
       def logfile
         options[:logfile]
@@ -65,17 +77,24 @@ module MongoMapper
         roles_to_add.map{|r| ":#{r}" }
       end
 
-      def role_strategy_statement 
-        "strategy :#{strategy}, :default\n#{role_class_stmt}"
+      def role_class
+        options[:role_class].classify || 'Role'
       end
 
-      def role_class_stmt
-        "  role_class :role" if [:one_role, :many_roles].include? (strategy.to_sym)
+      def role_strategy_statement 
+        "strategy :#{strategy} #{strategy_options}"
       end
 
       def roles_statement
         return '' if has_valid_roles_statement?
         roles ? "valid_roles_are #{roles.join(', ')}" : ''
+      end
+
+      def strategy_options
+        if role_class != 'Role' role_class_strategy?
+          return ", :role_class => :#{options[:role_class] || 'role'}"
+        end
+        ''
       end
 
       def has_valid_roles_statement? 

@@ -10,29 +10,15 @@ module Roles::Base
       end
     end
   end
-end
-
-class Role
-  include MongoMapper::Document
-  key :name, String
-
-  validates_uniqueness_of :name
-
-  scope :by_name,  lambda { |name| where(:name => name.to_s) }
-  scope :by_names,  lambda { |*names| where(:name => names.to_strings) }
-
-  class << self
-    def find_roles(*role_names)  
-      role_names.flatten!
-      by_names(role_names).all
-      # where(:name => role_names.to_strings).all 
-    end
-
-    def find_role role_name
-      raise ArgumentError, "#find_role takes a single role name as argument, not: #{role_name.inspect}" if !role_name.kind_of_label?
-      by_name(role_name).first
-    end
+  
+  def find_roles(*role_names)  
+    role_names.flatten!
+    by_names(role_names).all
+    # where(:name => role_names.to_strings).all 
   end
-end  
 
-
+  def find_role role_name
+    raise ArgumentError, "#find_role takes a single role name as argument, not: #{role_name.inspect}" if !role_name.kind_of_label?
+    by_name(role_name).first
+  end
+end

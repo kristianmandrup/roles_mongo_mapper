@@ -11,9 +11,9 @@ module RoleStrategy::MongoMapper
       base.extend ClassMethods
       
       # TODO - refactor into strategy method in base.rb 
-      base.key :many_roles_ids, Array, :typecast => 'ObjectId'
-      base.many :many_roles, :class_name => 'Role', :in => :many_roles_ids 
-      base.ensure_index :many_role_ids     
+      # base.key :many_roles_ids, Array, :typecast => 'ObjectId'
+      # base.many :many_roles, :class_name => 'Role', :in => :many_roles_ids 
+      # base.ensure_index :many_role_ids     
     end
 
     module ClassMethods  

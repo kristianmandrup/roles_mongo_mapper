@@ -15,9 +15,7 @@ module Roles::MongoMapper
     
     MAP = {
       :admin_flag   => "key :admin_flag, Boolean",
-      # :many_roles   => "references_many :many_roles, :stored_as => :array, :class_name => 'Role', :default => []",
-      # :one_role     => "references_one :one_role, :class_name => 'Role'",
-
+      
       # :embed_many_roles   => "many :many_roles, :class_name => 'Role'",
       # :embed_one_role     => "one :one_role, :class_name => 'Role'",
 
@@ -44,17 +42,26 @@ module Roles::MongoMapper
       raise ArgumentError, "Unknown role strategy #{strategy_name}" if !valid_strategies.include? strategy_name
       use_roles_strategy strategy_name
 
-      if strategies_with_role_class.include? strategy_name
-        if !options.kind_of? Symbol
-          @role_class_name = get_role_class(strategy_name, options)
-        else
-          @role_class_name = default_role_class(strategy_name)
-        end
-      end
+      set_role_class(strategy_name, options) if strategies_with_role_class.include? strategy_name
       
       if default_options?(options) && MAP[strategy_name]
         instance_eval statement(MAP[strategy_name])
       end       
+
+      # one_role reference
+      if strategy_name == :one_role
+        key :one_role_id, ObjectId 
+        key :one_role, @role_class_name
+      end
+      
+      # many_roles references
+      if strategy_name == :many_roles
+        instance_eval %{
+          key :many_roles_ids, Array, :typecast => 'ObjectId'
+          many :many_roles, :class_name => '#{@role_class_name}', :in => :many_roles_ids 
+          ensure_index :many_role_ids     
+        }
+      end
 
       # case name
       # when :embed_one_role
@@ -70,6 +77,10 @@ module Roles::MongoMapper
 
     private
 
+    def set_role_class strategy_name, options = {}
+      @role_class_name = !options.kind_of?(Symbol) ? get_role_class(strategy_name, options) : default_role_class(strategy_name)
+    end
+
     def default_options? options = {}
       return true if options == :default                           
       if options.kind_of? Hash
@@ -84,7 +95,7 @@ module Roles::MongoMapper
 
     def default_role_class strategy_name
       if defined? ::Role
-        require "roles_mongo_mapper/role"
+        require "roles_mongo_mapper/role_class"
         return ::Role 
       end
       raise "Default Role class not defined"

@@ -9,8 +9,8 @@ module RoleStrategy::MongoMapper
     def self.included base
       base.extend Roles::Generic::Role::ClassMethods
       base.extend ClassMethods
-      base.key :one_role_id, ObjectId 
-      base.key :one_role, Role
+      # base.key :one_role_id, ObjectId 
+      # base.key :one_role, Role
     end
 
     module ClassMethods 
