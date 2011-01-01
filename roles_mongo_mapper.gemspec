@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{roles_mongo_mapper}
-  s.version = "0.3.0"
+  s.version = "0.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
-  s.date = %q{2010-12-27}
+  s.date = %q{2011-01-01}
   s.description = %q{Makes it easy to set a role strategy on your User model in MongoMapper}
   s.email = %q{kmandrup@gmail.com}
   s.extra_rdoc_files = [
@@ -24,11 +24,13 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/generators/mongo_mapper/roles/roles_generator.rb",
+    "lib/generators/mongo_mapper/roles/templates/role.rb",
     "lib/roles_mongo_mapper.rb",
     "lib/roles_mongo_mapper/base.rb",
     "lib/roles_mongo_mapper/embedded_role.rb",
     "lib/roles_mongo_mapper/namespaces.rb",
     "lib/roles_mongo_mapper/role.rb",
+    "lib/roles_mongo_mapper/role_class.rb",
     "lib/roles_mongo_mapper/strategy.rb",
     "lib/roles_mongo_mapper/strategy/multi.rb",
     "lib/roles_mongo_mapper/strategy/multi/embed_many_roles.rb",
