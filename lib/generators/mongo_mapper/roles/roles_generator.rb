@@ -17,6 +17,11 @@ module MongoMapper
         logger.add_logfile :logfile => logfile if logfile
         logger.debug "apply_role_strategy for : #{strategy} in model #{name}"
 
+        if !valid_strategy?
+          say "Strategy '#{strategy}' is not valid. The valid strategies are: #{valid_strategies.join(', ')}", :red
+          return
+        end
+
         if !has_model_file?(user_model_name)
           say "User model #{user_model_name} not found", :red
           return 
@@ -26,10 +31,6 @@ module MongoMapper
           insert_into_model user_model_name, :after => /include MongoMapper::\w+/ do
             insertion_text
           end     
-
-          unless read_model(:user) =~ /use_roles_strategy/
-            inject_into_file model_file(:user), "use_roles_strategy :#{strategy}\n\n", :before => "class"
-          end        
         rescue Exception => e
           logger.debug"Error: #{e.message}"
         end 
@@ -44,9 +45,20 @@ module MongoMapper
 
       use_orm :mongo_mapper
 
-      def role_class_strategy?
-        [:one_role, :many_roles, :embed_one_role, :embed_many_roles].include? strategy.to_sym
+      def role_class_strategy? 
+        # :embed_one_role, :embed_many_roles
+        [:one_role, :many_roles].include? strategy.to_sym
       end
+
+      def valid_strategy?
+        valid_strategies.include? strategy.to_sym
+      end
+
+      def valid_strategies
+        # :embed_many_roles, :embed_one_role, 
+        [:admin_flag, :one_role, :role_string, :many_roles, :role_strings, :roles_mask]
+      end
+
 
       def copy_role_class
         logger.debug "copy_role_class: #{role_class.underscore}"
