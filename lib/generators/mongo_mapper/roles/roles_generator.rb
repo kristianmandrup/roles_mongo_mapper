@@ -31,7 +31,14 @@ module MongoMapper
           return 
         end
 
+        if !is_mongo_mapper_model?(user_class)
+          say "User model #{user_class} is not a Mongo Mapper Document", :red
+          return 
+        end
+        
         begin 
+          logger.debug "Trying to insert roles code into #{user_class}"     
+                   
           insert_into_model user_class, :after => /include MongoMapper::\w+/ do
             insertion_text
           end     
@@ -48,6 +55,10 @@ module MongoMapper
       include Rails3::Assist::BasicLogger
 
       use_orm :mongo_mapper
+
+      def is_mongo_mapper_model? name
+        read_model(name) =~ /include MongoMapper::\w+/
+      end
 
       def role_class_strategy? 
         # :embed_one_role, :embed_many_roles
