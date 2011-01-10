@@ -8,16 +8,16 @@ begin
     gem.homepage = "http://github.com/kristianmandrup/roles_mongo_mapper"
     gem.authors = ["Kristian Mandrup"]
 
-    gem.add_development_dependency "rspec",           ">= 2.1"
-    gem.add_development_dependency 'generator-spec',  "~> 0.6.5"
+    gem.add_development_dependency "rspec",           ">= 2.0.1"
+    gem.add_development_dependency 'generator-spec',  ">= 0.7.0"
 
     gem.add_dependency "mongo_mapper",      '>= 0.8.4'
-    gem.add_dependency "activesupport",     '~> 3.0'
+    gem.add_dependency "activesupport",     '>= 3.0.1'
     gem.add_dependency "require_all",       '~> 1.2.0'
-    gem.add_dependency "sugar-high",        '~> 0.3.0'
+    gem.add_dependency "sugar-high",        '~> 0.3.1'
     gem.add_dependency "roles_generic",     '~> 0.3.3'
-    gem.add_dependency 'rails3_artifactor', '~> 0.3.0'
-    gem.add_dependency 'logging_assist',    '>= 0.1.5'
+    gem.add_dependency 'rails3_artifactor', '~> 0.3.1'
+    gem.add_dependency 'logging_assist',    '>= 0.2.0'
 
   end
   Jeweler::GemcutterTasks.new

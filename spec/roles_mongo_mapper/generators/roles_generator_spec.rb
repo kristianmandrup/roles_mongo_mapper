@@ -1,5 +1,6 @@
 require 'generator_spec_helper'
-require_generator :mongo_mapper => :roles
+require 'generators/mongo_mapper/roles/roles_generator'
+# require_generator :mongo_mapper => :roles
 
 # root_dir = Rails3::Assist::Directory.rails_root
 root_dir = File.join(Rails.application.config.root_dir, 'rails')

@@ -1,5 +1,6 @@
 require 'rails3_artifactor'
 require 'logging_assist'
+require 'generators/mongo_mapper/roles/core_ext'
 
 module MongoMapper 
   module Generators
@@ -17,29 +18,31 @@ module MongoMapper
 
       class_option :logfile,      :type => :string,   :aliases => "-l",   :default => nil,    :desc => "Logfile location"
 
+      source_root File.dirname(__FILE__) + '/templates'
+
       def apply_role_strategy
         logger.add_logfile :logfile => logfile if logfile
         logger.debug "apply_role_strategy for : #{strategy} in model #{user_class}"
 
         if !valid_strategy?
-          say "Strategy '#{strategy}' is not valid. The valid strategies are: #{valid_strategies.join(', ')}", :red
+          logger.error "Strategy '#{strategy}' is not valid. The valid strategies are: #{valid_strategies.join(', ')}"
           return
         end
 
-        if !has_model_file?(user_class)
-          say "User model #{user_class} not found", :red
+        if !has_model_file?(user_file)
+          logger.error "User model #{user_class} not found"
           return 
         end
 
-        if !is_mongo_mapper_model?(user_class)
-          say "User model #{user_class} is not a Mongo Mapper Document", :red
+        if !is_mongo_mapper_model?(user_file)
+          logger.error "User model #{user_class} is not a Mongo Mapper Document"
           return 
         end
         
         begin 
           logger.debug "Trying to insert roles code into #{user_class}"     
                    
-          insert_into_model user_class, :after => /include MongoMapper::\w+/ do
+          insert_into_model user_file, :after => /include MongoMapper::\w+/ do
             insertion_text
           end     
         rescue Exception => e
@@ -56,8 +59,16 @@ module MongoMapper
 
       use_orm :mongo_mapper
 
+      def user_file
+        user_class.as_filename
+      end
+
+      def role_file
+        role_class.as_filename
+      end
+
       def is_mongo_mapper_model? name
-        read_model(name) =~ /include MongoMapper::\w+/
+        read_model(user_class) =~ /include MongoMapper::\w+/
       end
 
       def role_class_strategy? 
@@ -76,8 +87,8 @@ module MongoMapper
 
 
       def copy_role_class
-        logger.debug "copy_role_class: #{role_class.underscore}"
-        template 'role.rb', "app/models/#{role_class.underscore}.rb"
+        logger.debug "creating role model: #{role_file}"
+        template 'role.rb', "app/models/#{role_file}.rb"
       end
 
       def logfile
@@ -86,6 +97,10 @@ module MongoMapper
 
       def orm
         :mongo_mapper
+      end
+
+      def orm_class
+        orm.to_s.camelize 
       end
 
       def default_roles
@@ -114,7 +129,7 @@ module MongoMapper
       end
 
       def strategy_options
-        return ", :role_class => :#{role_class.to_s.underscore}" if role_class_strategy? && role_class.to_s != 'Role'
+        return ", :role_class => '#{role_class}'" if role_class_strategy? && role_class.to_s != 'Role'
         ''
       end
 
@@ -123,7 +138,7 @@ module MongoMapper
       end
 
       def insertion_text
-        %Q{include Roles::#{orm.to_s.camelize} 
+        %Q{include Roles::#{orm_class} 
   #{role_strategy_statement}
   #{valid_roles_statement}}
       end
