@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
-  s.date = %q{2011-01-10}
+  s.date = %q{2011-07-12}
   s.description = %q{Makes it easy to set a role strategy on your User model in MongoMapper}
   s.email = %q{kmandrup@gmail.com}
   s.extra_rdoc_files = [
@@ -64,27 +64,10 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://github.com/kristianmandrup/roles_mongo_mapper}
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.7}
+  s.rubygems_version = %q{1.6.2}
   s.summary = %q{Implementation of Roles generic API for MongoMapper}
-  s.test_files = [
-    "spec/generator_spec_helper.rb",
-    "spec/roles_mongo_mapper/generators/roles_generator_spec.rb",
-    "spec/roles_mongo_mapper/strategy/api_examples.rb",
-    "spec/roles_mongo_mapper/strategy/hooks.rb",
-    "spec/roles_mongo_mapper/strategy/multi/embed_many_roles_spec.rb",
-    "spec/roles_mongo_mapper/strategy/multi/many_roles_spec.rb",
-    "spec/roles_mongo_mapper/strategy/multi/role_strings_spec.rb",
-    "spec/roles_mongo_mapper/strategy/multi/roles_mask_spec.rb",
-    "spec/roles_mongo_mapper/strategy/single/admin_flag_spec.rb",
-    "spec/roles_mongo_mapper/strategy/single/embed_one_role_spec.rb",
-    "spec/roles_mongo_mapper/strategy/single/one_role_spec.rb",
-    "spec/roles_mongo_mapper/strategy/single/role_string_spec.rb",
-    "spec/roles_mongo_mapper/strategy/user_setup.rb",
-    "spec/spec_helper.rb"
-  ]
 
   if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
