@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{Implementation of Roles generic API for MongoMapper}
   gem.description = %Q{Makes it easy to set a role strategy on your User model in MongoMapper}
   gem.email = "kmandrup@gmail.com"
-  gem.homepage = "http://github.com/kristianmandrup/roles_active_record"
+  gem.homepage = "http://github.com/kristianmandrup/roles_mongo_mapper"
   gem.email = "kmandrup@gmail.com"
   gem.authors = ["Kristian Mandrup"]
   # dependencies defined in Gemfile
@@ -39,7 +39,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "cantango #{version}"
+  rdoc.title = "roles_mongo_mapper #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

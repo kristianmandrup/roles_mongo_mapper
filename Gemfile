@@ -7,7 +7,7 @@ group :default do
   gem "activesupport",     '>= 3.0.1'
   gem "require_all",       '~> 1.2.0'
   gem "sugar-high",        '>= 0.5.0'
-  gem "roles_generic",     '>= 0.3.9'
+  gem "roles_generic",     '>= 0.5.0'
 end
 
 group :development, :test do
@@ -17,7 +17,7 @@ end
 
 group :development do
   gem "jeweler",  ">= 1.6.4"
-  gem "bundler",  "~> 1.0.10"
+  gem "bundler",  ">= 1.0.10"
   gem "rdoc"
 end
 
